@@ -97,7 +97,7 @@ AR := $(HOST)-ar
 AS := clang
 LD := $(HOST)-ld
 STRIP := $(HOST)-strip
-RANLIB := $(HOST)-gcc-ranlib
+RANLIB := llvm-ranlib
 EXTRA_CFLAGS += --sysroot=$(ANDROID_TOOLCHAIN_PATH)/sysroot
 endif
 
@@ -120,16 +120,16 @@ AR=xcrun ar
 LD=xcrun ld
 STRIP=xcrun strip
 RANLIB=xcrun ranlib
-EXTRA_CFLAGS += -isysroot $(MACOSX_SDK) -mmacosx-version-min=$(MIN_OSX_VERSION) -DMACOSX_DEPLOYMENT_TARGET=$(MIN_OSX_VERSION)
+EXTRA_CFLAGS += -isysroot $(MACOSX_SDK) -mmacosx-version-min=$(MIN_OSX_VERSION) -DMACOSX_DEPLOYMENT_TARGET=$(MIN_OSX_VERSION) --target=$(HOST)
 EXTRA_LDFLAGS += -Wl,-syslibroot,$(MACOSX_SDK) -mmacosx-version-min=$(MIN_OSX_VERSION) -isysroot $(MACOSX_SDK) -DMACOSX_DEPLOYMENT_TARGET=$(MIN_OSX_VERSION)
 
-ifeq ($(ARCH),x86_64)
-EXTRA_CFLAGS += -m64 $(OPTIM)
-EXTRA_LDFLAGS += -m64
-else
-EXTRA_CFLAGS += -m32 $(OPTIM)
-EXTRA_LDFLAGS += -m32
-endif
+#ifeq ($(ARCH),x86_64)
+#EXTRA_CFLAGS += -m64 $(OPTIM)
+#EXTRA_LDFLAGS += -m64
+#else
+#EXTRA_CFLAGS += -m32 $(OPTIM)
+#EXTRA_LDFLAGS += -m32
+#endif
 
 XCODE_FLAGS = -sdk macosx$(OSX_VERSION)
 ifeq ($(shell xcodebuild -version 2>/dev/null | tee /dev/null|head -1|cut -d\  -f2|cut -d. -f1),3)
@@ -283,7 +283,7 @@ HOSTCONF := --prefix="$(PREFIX)"
 HOSTCONF += --datarootdir="$(PREFIX)/share"
 HOSTCONF += --includedir="$(PREFIX)/include"
 HOSTCONF += --libdir="$(PREFIX)/lib"
-HOSTCONF += --build="$(BUILD)" --host="$(HOST)" --target="$(HOST)"
+HOSTCONF += --build="$(BUILD)" --host="$(BUILD)"  --target="$(HOST)"
 HOSTCONF += --program-prefix=""
 # libtool stuff:
 HOSTCONF += --enable-static --disable-shared --disable-dependency-tracking

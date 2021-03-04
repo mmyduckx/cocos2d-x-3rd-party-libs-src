@@ -1,6 +1,7 @@
 # PNG
-PNG_VERSION := 1.6.16
-PNG_URL := $(SF)/libpng/libpng16/older-releases/$(PNG_VERSION)/libpng-$(PNG_VERSION).tar.xz
+PNG_VERSION := 1.6.37
+PNG_URL := https://sourceforge.net/projects/libpng/files/libpng16/$(PNG_VERSION)/libpng-$(PNG_VERSION).tar.xz/
+
 
 
 $(TARBALLS)/libpng-$(PNG_VERSION).tar.xz:
@@ -20,4 +21,5 @@ DEPS_png = zlib $(DEPS_zlib)
 	cd $< && rm -f aclocal.m4
 	cd $< && aclocal && autoconf
 	cd $< && $(MAKE) install
+	
 	touch $@

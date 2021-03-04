@@ -1,6 +1,6 @@
 # jpeg
 
-JPEG_VERSION := 9b
+JPEG_VERSION := 9d
 JPEG_URL := http://www.ijg.org/files/jpegsrc.v$(JPEG_VERSION).tar.gz
 # JPEG_URL := http://download.videolan.org/pub/contrib/jpegsrc.v$(JPEG_VERSION).tar.gz
 
@@ -16,7 +16,7 @@ jpeg: jpegsrc.v$(JPEG_VERSION).tar.gz .sum-jpeg
 	$(MOVE)
 
 .jpeg: jpeg
-	cd $< && $(HOSTVARS) ./configure $(HOSTCONF)
-	cd $< && $(MAKE) install
+	cd $< && $(HOSTVARS) ./configure $(HOSTCONF) --with-gnu-ld --with-sysroot /Users/xwx/gitWork/cocos2d-x-3rd-party-libs-src/build/android-toolchain-arm/sysroot
+	cd $< && $(MAKE) clean && $(MAKE) install V=1
 	cd $< && if test -e $(PREFIX)/lib/libjpeg.a; then $(RANLIB) $(PREFIX)/lib/libjpeg.a; fi
 	touch $@

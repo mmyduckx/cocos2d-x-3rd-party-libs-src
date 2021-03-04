@@ -1,7 +1,7 @@
 #!/bin/bash
 # exit this script if any commmand fails
 set -e
-
+set -x
 source `pwd`/main.ini
 #
 # A script to build static library for Android
@@ -377,6 +377,8 @@ do
         if [ $cfg_platform_name = "android" ];then
             if [ $MY_TARGET_ARCH = "arm64-v8a" ];then
                 export ANDROID_API=android-$cfg_default_arm64_build_api
+            elif [ $MY_TARGET_ARCH = "x86_64" ];then
+                export ANDROID_API=android-$cfg_default_x86_64_build_api
             else
                 export ANDROID_API=android-$build_api
             fi

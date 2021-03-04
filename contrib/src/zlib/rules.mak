@@ -1,5 +1,5 @@
 # ZLIB
-ZLIB_VERSION := 1.2.8
+ZLIB_VERSION := 1.2.11
 ZLIB_URL := http://zlib.net/fossils/zlib-$(ZLIB_VERSION).tar.gz
 
 
@@ -36,6 +36,6 @@ ifndef HAVE_WIN32
 	cd $< && $(MAKE) install
 endif
 ifdef HAVE_WIN32
-	cd $< && make -fwin32/Makefile.gcc BINARY_PATH=$(PREFIX)/bin INCLUDE_PATH=$(PREFIX)/include LIBRARY_PATH=$(PREFIX)/lib install
+	cd $< && make V=1 -fwin32/Makefile.gcc BINARY_PATH=$(PREFIX)/bin INCLUDE_PATH=$(PREFIX)/include LIBRARY_PATH=$(PREFIX)/lib install
 endif
 	touch $@

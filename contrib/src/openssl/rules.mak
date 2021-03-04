@@ -1,13 +1,19 @@
 # OPENSSL
-OPENSSL_VERSION := 1.1.0c
+OPENSSL_VERSION := 1.1.1g
 OPENSSL_URL := https://www.openssl.org/source/openssl-$(OPENSSL_VERSION).tar.gz
 
 OPENSSL_EXTRA_CONFIG_1=no-shared no-unit-test
 OPENSSL_EXTRA_CONFIG_2=
 
 ifdef HAVE_MACOSX
+
 ifeq ($(MY_TARGET_ARCH),x86_64)
 OPENSSL_CONFIG_VARS=darwin64-x86_64-cc
+OPENSSL_ARCH=-m64
+endif
+
+ifeq ($(MY_TARGET_ARCH),arm64)
+OPENSSL_CONFIG_VARS=darwin64-arm64-cc
 OPENSSL_ARCH=-m64
 endif
 
@@ -38,6 +44,7 @@ endif
 ifeq ($(MY_TARGET_ARCH),armv7)
 OPENSSL_CONFIG_VARS=linux-generic32
 endif
+
 endif
 
 ifdef HAVE_ANDROID
@@ -137,12 +144,7 @@ $(TARBALLS)/openssl-$(OPENSSL_VERSION).tar.gz:
 
 openssl: openssl-$(OPENSSL_VERSION).tar.gz .sum-openssl
 	$(UNPACK)
-ifdef HAVE_ANDROID
-	$(APPLY) $(SRC)/openssl/android-clang.patch
-endif
-ifdef HAVE_IOS
-	$(APPLY) $(SRC)/openssl/ios-armv7-crash.patch
-endif
+
 	$(MOVE)
 
 .openssl: openssl
@@ -157,8 +159,8 @@ ifdef HAVE_TVOS
 endif
 ifdef HAVE_LINUX
 ifndef HAVE_ANDROID
-	cd $< && perl -i -pe "s|^CFLAGS=(.*) -DNDEBUG (.*)-O3|CFLAGS=\\1 \\2 ${EXTRA_CFLAGS} ${OPTIM}|g" Makefile
-	cd $< && perl -i -pe "s|^CFLAGS_Q=(.*) -DNDEBUG (.*)|CFLAGS_Q=\\1 \\2 ${EXTRA_CFLAGS} ${OPTIM}|g" Makefile
+#	cd $< && perl -i -pe "s|^CFLAGS=(.*) -DNDEBUG (.*)-O3|CFLAGS=\\1 \\2 ${EXTRA_CFLAGS} ${OPTIM}|g" Makefile
+#	cd $< && perl -i -pe "s|^CFLAGS_Q=(.*) -DNDEBUG (.*)|CFLAGS_Q=\\1 \\2 ${EXTRA_CFLAGS} ${OPTIM}|g" Makefile
 endif
 endif
 ifdef HAVE_MACOSX
